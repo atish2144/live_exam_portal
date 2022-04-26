@@ -3,30 +3,31 @@ import Navbar from '../Components/Navbar'
 import Navbar2 from './Navbar2'
 // import image1 from "../images/fullscreen.png"
 import axios from 'axios'
-import { styled } from '@mui/material/styles';
+// import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 // import Autocomplete from '@mui/material/Autocomplete';
-import { Autocomplete, Grid, Box, Paper } from '@mui/material';
+import { Autocomplete, Grid, Box, } from '@mui/material';
+// import Paper from '@mui/material';
+
 import TextareaAutosize from '@mui/material/TextareaAutosize';
-import { width } from '@mui/system';
 
 
 function AddQuestion() {
-    const [data, setdata] = useState([])
-    const [token, settoken] = useState(JSON.parse(localStorage.getItem("data")) || "")
+    const [, setdata] = useState([])
+    const [token,] = useState(JSON.parse(localStorage.getItem("data")) || "")
 
     const [Topics, setTopics] = useState("");
     const options = Topics
     const [value, setValue] = useState(options[0]);
     const [inputValue, setInputValue] = React.useState('');
     const [Topic, setTopic] = useState("")
-    const [count, setcount] = useState(0);
+    // const [count, setcount] = useState(0);
 
     const [Topics1, setTopics1] = useState("");
     const options1 = Topics1;
     const [Topicvalue, setTopicValue] = useState(options1[0]);
     const [inputTopicValue, setInputTopicValue] = React.useState('');
-    const [Topic1, setTopic1] = useState("");
+    // const [Topic1, setTopic1] = useState("");
 
 
     const Qtype = ["MULTIPLE CHOICE", "MULTIPLE RESPONSE", "FILL IN BLANKS"]
@@ -39,11 +40,14 @@ function AddQuestion() {
     const Dloptions = DlType;
     const [Dlvalue, setDlvalue] = useState(Dloptions[0]);
     const [DlInputValue, setDlInputValue] = React.useState('')
-
-
     //option
-    const [opt, setopt] = useState(["", "", "", ""]);
+    const [opt, setopt] = useState(["1", "2", "3", "4"]);
+    const [marks, setmarks] = useState(1);
+    const [wrongmarks, setwrongmarks] = useState(0);
 
+
+    //enable rich text area
+    const [, setrichtextarea] = useState(false)
 
     useEffect(() => {
 
@@ -51,7 +55,7 @@ function AddQuestion() {
             .get(`http://admin.liveexamcenter.in/api/subjects?term=   
             `, {
                 headers: {
-                    Authorization: token.token,
+                        Authorization: token.token,
                 },
             })
             .then((res) => {
@@ -66,17 +70,17 @@ function AddQuestion() {
                 result1 = res.data.result.filter((obj, index) => obj.name === value)
                 console.log("1", result1);
                 setTopic(result1[0]._id)
-                setcount(prev => prev + 1);
+                // setcount(prev => prev + 1);
 
             })
             .catch((err) => {
                 console.log(err);
             });
-    }, [token, value]);
+    }, [token, value,]);
 
     useEffect(() => {
 
-        if (Topic != "") {
+        if (Topic !== "") {
             axios
                 .get(`http://admin.liveexamcenter.in/api/topics/subject/${Topic}   
         `, {
@@ -92,7 +96,6 @@ function AddQuestion() {
 
                     console.log(temp1);
                     setTopics1(temp1)
-
                 })
                 .catch((err) => {
                     console.log(err);
@@ -101,26 +104,41 @@ function AddQuestion() {
     }, [token, Topic, value])
 
 
-
     // console.log(data);
     // console.log("2", Topic);
-    console.log("value", value);
+    // console.log("value", value);
     // console.log("Topic Value", Topicvalue);
+    // console.log(marks);
+    // console.log(wrongmarks);
 
-    const item = styled(Paper)(({ theme }) => ({
-        backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-        ...theme.typography.body2,
-        padding: theme.spacing(1),
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
-    }));
+    // const item = styled(Paper)(({ theme }) => ({
+    //     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    //     ...theme.typography.body2,
+    //     padding: theme.spacing(1),
+    //     textAlign: 'center',
+    //     color: theme.palette.text.secondary,
+    // }));
+
+
+
+
+    // const addopt = () => {
+    //     let temp = "";
+    //     opt.push(temp);
+    //     temp = opt
+    //     console.log("temp", temp);
+    //     setopt(temp)
+    // }
+    // console.log(opt);
+
+
 
     return (
         <div>
             <Navbar />
             <Navbar2 />
 
-            <div className='container ' style={{ margin: "80px", marginTop: "20px", border: "0.25px solid   black" }}>
+            <div className='container ' style={{ margin: "80px", marginTop: "20px", marginBottom: "0", border: "0.25px solid   black" }}>
 
 
                 <div className='cnt border-bottom  '>
@@ -138,7 +156,6 @@ function AddQuestion() {
 
                 <Box sx={{ flexGrow: 1 }}>
                     <Grid container spacing={2}>
-                        {/* <div className='cl1' style={{ display: "flex", flexDirection: "row", margin: "0px 80px 20px  80px" }}> */}
 
                         {/* select Subject */}
                         <Grid item xs={6}>
@@ -241,29 +258,31 @@ function AddQuestion() {
                                 label="Marks"
                                 // defaultvalue={1}
                                 // placeholder=''
-                                value={value}
+                                value={marks}
                                 defaultValue={1}
-                                onChange={(e) => setValue(e.target.value)}
+                                onChange={(e) => setmarks(e.target.value)}
                                 sx={{ width: 220 }}
                             />
                         </Grid>
 
                         {/* Wrong Marks  */}
-                        <Grid item xs={3} >
-                            <TextField
-                                error={false}
-                                type='number'
-                                id="outlined-error"
-                                label="Marks"
-                                // placeholder='1'
-                                value={value}
-                                defaultValue={0}
-                                onChange={(e) => setValue(e.target.value)}
-                                sx={{ width: 220 }}
-                            />
-                        </Grid>
+                            <Grid item xs={3} >
+                                <TextField
+                                    error={false}
+                                    type='number'
+                                    id="outlined-error"
+                                    label="Marks"
+                                    // placeholder='1'
+                                    value={wrongmarks}
+                                    defaultValue={0}
+                                    onChange={(e) => setwrongmarks(e.target.value)}
+                                    sx={{ width: 220 }}
+                                />
+                            </Grid>
 
                         <label style={{ margin: "20px 40px 0px 30px " }} >Question </label>
+
+
                         <Grid item xs={12} >
                             <TextareaAutosize
                                 aria-label="empty textarea"
@@ -271,6 +290,11 @@ function AddQuestion() {
                                 style={{ width: 1060, height: 200 }}
                             />
                         </Grid>
+
+                        <label style={{ color: "gray", marginLeft: "2%", cursor: "pointer " }}
+                            onClick={() => setrichtextarea(true)}
+                        >Enabel Rich text editor</label>
+
                         <Grid item xs={12} >
                             <label style={{ margin: " 0 0  0 20px", fontSize: "20px" }}>Options</label>
                             <br />
@@ -281,33 +305,56 @@ function AddQuestion() {
                     {
                         opt.map((obj, index) => {
                             return (
+                                <>
+                                    <div className='main'>
+                                        <div className="container row mb-3">
+                                            <div
+                                                className="optbtn col border border-dark text-center"
+                                                style={{ backgroundColor: "#E9ECEF" }}
+                                            >
+                                                <input type="radio" className="mt-5 " />
+                                                <label>Option{index + 1}</label>
+                                            </div>
+                                            <TextareaAutosize
+                                                aria-label="empty textarea"
+                                                onChange={(e) => console.log(e.target.value)}
 
-                                <div className="container row mb-3">
-                                    <div
-                                        className="optbtn col border border-dark text-center"
-                                        style={{ backgroundColor: "#E9ECEF" }}
-                                    >
-                                        <input type="radio" className="mt-5 " />
-                                        <label>Option{index + 1}</label>
+                                                // placeholder="Empty"
+                                                style={{ width: 900, height: 100, }}
+                                            />
+                                        </div>
                                     </div>
-                                    <TextareaAutosize
-                                        aria-label="empty textarea"
-                                        onChange={(e) => console.log(e.target.value)}
+                                    <label style={{ color: "gray", marginLeft: "1%", cursor: "pointer " }}
+                                        onClick={() => setopt((prev) =>
+                                            prev.filter((op, ind) => index !== ind))}
+                                    >Remove Option     |    </label>
 
-                                        // placeholder="Empty"
-                                        style={{ width: 900, height: 100, }}
-                                    />
+                                    <label style={{ color: "gray", marginLeft: "5%", cursor: "pointer " }}
+                                        onClick={() => setrichtextarea(true)}
+                                    >Enabel Rich text editor</label>
 
-                                </div>
+                                </>
                             )
                         }
                         )
                     }
                 </div>
+                <label style={{ color: "blue", margin: "2% 0% 3% 1% ", cursor: "pointer " }}
+                    // onClick={() => addopt()}
+                    onClick={() => setopt((prev) => [...prev, " "])}
 
+                > + Add option </label>
             </div>
 
+            <div className='container ' style={{ margin: "0 80px 0 80px", border: "0.25px solid   black" }}>
 
+
+                <button style={{ margin: " 10px ", width: "200px", height: "40px", backgroundColor: "#1a75ff" }}>Save Question</button>
+
+                <button style={{ margin: " 10px ", width: "200px", height: "40px", backgroundColor: "#f5f5f0" }}>Cancle</button>
+
+                {/* <button type="button" class="btn btn-primary">Primary</button> */}
+            </div>
         </div >
     )
 }

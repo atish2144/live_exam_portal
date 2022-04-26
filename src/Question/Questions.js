@@ -6,12 +6,11 @@ import axios from 'axios'
 import { useNavigate } from "react-router-dom"
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { height } from '@mui/system'
 
 
 function Questions() {
   const [data, setdata] = useState([])
-  const [token, settoken] = useState(JSON.parse(localStorage.getItem("data")) || "")
+  const [token,] = useState(JSON.parse(localStorage.getItem("data")) || "")
   const [term, setterm] = useState("")
   const [Topic, setTopic] = useState("");
   const [Topics, setTopics] = useState("");
@@ -112,7 +111,7 @@ function Questions() {
 
         </div>
 
-        {/* <Autocomplete
+        <Autocomplete
           size="small"
           // placeholder="choose topic"
           onChange={(event, newValue) => {
@@ -128,10 +127,10 @@ function Questions() {
           options={Topics}
           sx={{ width: 200 }}
           renderInput={(params) => <TextField  {...params} label="Topic" />}
-        /> */}
+        />
 
 
-        <Autocomplete
+        {/* <Autocomplete
           id="combo-box-demo"
           size="small"
           options={Topics}
@@ -150,7 +149,7 @@ function Questions() {
             />
           )}
         />
-
+ */}
 
 
 

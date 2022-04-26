@@ -11,17 +11,17 @@ function Navbar2() {
           <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
             <ul className="navbar-nav mr-auto mt-2 mt-lg-0 py-auto" >
 
-              <label> <li onClick={() => navigate('/Login/Questions')} className="nav-item mt-2 ml-2" style={{ color: "white", marginRight: "20px" }} >
+              <label> <li onClick={() => navigate('/Login/Questions')} className="nav-item mt-2 ml-2" style={{ color: "white", marginRight: "20px", cursor: "pointer " }} >
                 Question
               </li>
               </label>
 
-              <label> <li onClick={() => navigate('/Login/Subject')} className="nav-item mt-2 ml-2" style={{ color: "white", marginRight: "20px" }} >
+              <label> <li onClick={() => navigate('/Login/Subject')} className="nav-item mt-2 ml-2" style={{ color: "white", marginRight: "20px", cursor: "pointer " }} >
                 Subject
               </li>
               </label>
 
-              <label> <li onClick={() => navigate('/Login/Topic')} className="nav-item mt-2 ml-2" style={{ color: "white", marginRight: "20px" }} >
+              <label> <li onClick={() => navigate('/Login/Topic')} className="nav-item mt-2 ml-2" style={{ color: "white", marginRight: "20px", cursor: "pointer " }} >
                 Topic
               </li>
               </label>

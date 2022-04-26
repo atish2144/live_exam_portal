@@ -5,6 +5,23 @@ import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
 import Grid from '@mui/material/Grid';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Button, Modal, TextField } from '@mui/material';
+import Box from '@mui/material/Box';
+import { fontSize } from '@mui/system';
+
+
+const style = {
+  position: 'absolute',
+  top: '25% ',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  // border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+
+};
 
 
 function Subject() {
@@ -12,6 +29,13 @@ function Subject() {
   const [token, settoken] = useState(JSON.parse(localStorage.getItem("data")) || "")
   const [limit, setlimit] = useState(5)
   const [term, setterm] = useState("")
+
+  const [subject, setSubject] = useState({ name: "" })
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
 
 
   useEffect(() => {
@@ -23,16 +47,29 @@ function Subject() {
       })
       .then((res) => {
         setdata(res.data)
-        // console.log(res.data);
+
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [token, limit, term]);
-
-  // console.log(data.result);
+  }, [token, limit, term, data]);
 
 
+
+  const addSubject = async () => {
+
+    await axios("http://admin.liveexamcenter.in/api/subjects", {
+      method: "POST",
+      data: subject,
+      headers: {
+        Authorization: token.token,
+        "Content-Type": "application/json",
+      },
+    });
+
+    setOpen(false)
+  }
+  console.log(subject)
   return (
     <div>
       <Navbar></Navbar>
@@ -41,7 +78,7 @@ function Subject() {
       <div>
         <label className='question' style={{ fontSize: "Bold" }}>Subject</label>
 
-        <button type="button" className="btn btn-primary" style={{ position: "absolute", right: 0 }}>+  Add Subject</button>
+        <button type="button" className="btn btn-primary" style={{ position: "absolute", right: 0 }} onClick={handleOpen}>+  Add Subject</button>
       </div>
 
 
@@ -101,7 +138,52 @@ function Subject() {
           </table>
         </div>
       </div>
-    </div>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          {/* <Typography id="modal-modal-title" variant="h6" component="h2">
+            Text in a modal
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+          </Typography> */}
+          <div className='cnt1 border-bottom '>
+            <span href='#' className='m-3' style={{ position: "absolute", right: "1%", top: "0%", width: "20", fontSize: "20px", color: "black", cursor: "pointer" }} onClick={() => setOpen(false)}>x</span>
+            <label style={{ fontStyle: "bnd", fontSize: "20px" }}> Add Subject</label>
+          </div>
+          <label >Subject Name</label>
+
+          {/* <div className='cnt border-bottom '> */}
+          {/* </div> */}
+          <Grid>
+
+            <Grid item xs={12} >
+              <TextField
+                error={false}
+                type="text"
+                id="outlined-error"
+                label="Subject"
+                // placeholder='1'
+                value={subject.name}
+                // defaultValue=""
+                onChange={(e) => setSubject({ name: e.target.value })}
+                sx={{ width: 330, minWidth: 200 }}
+              />
+            </Grid>
+
+            <button className='btn' style={{ margin: "5% 2% 0 0", backgroundColor: "#037BFF", width: "100px", border: "none", color:"white"}} onClick={() => addSubject()}>Add</button>
+
+            <button className='btn' style={{ marginTop: "5%", backgroundColor: "#eaede4", width: "100px", border: "none" }} onClick={() => { setOpen(false); setSubject("") }}>Cancle</button>
+
+
+          </Grid>
+        </Box>
+      </Modal>
+    </div >
   )
 }
 

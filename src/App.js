@@ -8,6 +8,7 @@ import Subject from './Question/Subject';
 import Topic from './Question/Topic';
 import Navbar2 from './Question/Navbar2';
 import AddQuestion from './Question/AddQuestion';
+import Demo from './Question/Demo';
 function App() {
   return (
     <div>
@@ -15,6 +16,7 @@ function App() {
       {/* <Navbar/> */}
       {/* <Navbar2></Navbar2> */}
       {/* <Questions></Questions> */}
+      {/* <Demo></Demo> */}
       <Routes>
         <Route path='/*' element={<LoginPage />} />
         <Route exact path='/' element={<LoginPage />} />
