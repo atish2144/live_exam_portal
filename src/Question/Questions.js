@@ -6,7 +6,8 @@ import axios from 'axios'
 import { useNavigate } from "react-router-dom"
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 function Questions() {
   const [data, setdata] = useState([])
@@ -20,6 +21,7 @@ function Questions() {
   const [inputValue, setInputValue] = React.useState('');
   const navigate = useNavigate();
   const [limit, setlimit] = useState(20);
+
 
   useEffect(() => {
     axios
@@ -76,8 +78,25 @@ function Questions() {
   //   console.log(Topic);
   // }, [Topic])
 
+  console.log(data);
 
-  // console.log("Topics", Topic);
+  const deleteQuestion = (id) => {
+    console.log(id);
+    axios(` http://admin.liveexamcenter.in/api/questions/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: token.token,
+          "Content-Type": "application/json",
+        },
+      })
+    // setcnt(prev => prev + 1)
+
+
+
+
+  }
+
   console.log("Value", value);
   return (
     <div>
@@ -184,6 +203,10 @@ function Questions() {
                     );
                   })
                 }
+                <label className='mr-3 ' style={{ cursor: "pointer" }}><EditIcon />Edit </label>
+
+                <label style={{ cursor: "pointer" }} onClick={() => deleteQuestion(obj._id)} ><DeleteIcon />delete </label>
+
               </div>
             )
           })

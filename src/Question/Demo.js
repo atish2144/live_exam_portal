@@ -47,3 +47,14 @@ function Demo() {
 }
 
 export default Demo
+
+
+// const payload = { name: name, subject: Topic }
+//     axios("http://admin.liveexamcenter.in/api/topics", {
+//       method: "POST",
+//       data: payload,
+//       headers: {
+//         Authorization: token.token,
+//         "Content-Type": "application/json",
+//       },
+//     });

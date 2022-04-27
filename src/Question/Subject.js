@@ -29,6 +29,7 @@ function Subject() {
   const [token, settoken] = useState(JSON.parse(localStorage.getItem("data")) || "")
   const [limit, setlimit] = useState(5)
   const [term, setterm] = useState("")
+  const [count, setcount] = useState(0);
 
   const [subject, setSubject] = useState({ name: "" })
 
@@ -36,6 +37,7 @@ function Subject() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  //id for delete subject
 
 
   useEffect(() => {
@@ -52,7 +54,7 @@ function Subject() {
       .catch((err) => {
         console.log(err);
       });
-  }, [token, limit, term, data]);
+  }, [token, limit, term, count]);
 
 
 
@@ -68,8 +70,29 @@ function Subject() {
     });
 
     setOpen(false)
+    setcount((prev) => prev + 1)
   }
+
+
+
+  console.log(data);
   console.log(subject)
+
+
+  const deleteSubject = (id) => {
+    // console.log(id);
+    axios(`http://admin.liveexamcenter.in/api/subjects/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: token.token,
+        "Content-Type": "application/json",
+      },
+    });
+    setcount((prev) => prev + 1)
+
+  }
+
+
   return (
     <div>
       <Navbar></Navbar>
@@ -124,7 +147,7 @@ function Subject() {
                       <td>{data.name}</td>
                       <td>
                         <Grid item xs={8}>
-                          <DeleteIcon />
+                          <DeleteIcon onClick={() => deleteSubject(data._id)} />
                         </Grid>
 
                       </td>
@@ -145,12 +168,6 @@ function Subject() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          {/* <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography> */}
           <div className='cnt1 border-bottom '>
             <span href='#' className='m-3' style={{ position: "absolute", right: "1%", top: "0%", width: "20", fontSize: "20px", color: "black", cursor: "pointer" }} onClick={() => setOpen(false)}>x</span>
             <label style={{ fontStyle: "bnd", fontSize: "20px" }}> Add Subject</label>
@@ -163,6 +180,7 @@ function Subject() {
 
             <Grid item xs={12} >
               <TextField
+                size="small"
                 error={false}
                 type="text"
                 id="outlined-error"
@@ -175,7 +193,7 @@ function Subject() {
               />
             </Grid>
 
-            <button className='btn' style={{ margin: "5% 2% 0 0", backgroundColor: "#037BFF", width: "100px", border: "none", color:"white"}} onClick={() => addSubject()}>Add</button>
+            <button className='btn' style={{ margin: "5% 2% 0 0", backgroundColor: "#037BFF", width: "100px", border: "none", color: "white" }} onClick={() => {addSubject();setSubject({name:""})}}>Add</button>
 
             <button className='btn' style={{ marginTop: "5%", backgroundColor: "#eaede4", width: "100px", border: "none" }} onClick={() => { setOpen(false); setSubject("") }}>Cancle</button>
 
